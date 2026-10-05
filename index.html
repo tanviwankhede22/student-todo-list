@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student To-Do List</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gradient-to-br from-indigo-500 to-purple-600 min-h-screen p-6">
+
+    <div class="max-w-md mx-auto bg-white rounded-2xl shadow-2xl p-6">
+
+        <h1 class="text-3xl font-bold text-center text-indigo-600">
+            📚 My To-Do List
+        </h1>
+
+        <p class="text-center text-gray-500 mt-1">
+            Organize your daily tasks ✨
+        </p>
+
+        <div class="flex gap-2 mt-6">
+            <input id="taskInput"
+                type="text"
+                placeholder="Enter a task..."
+                class="flex-1 border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-400">
+
+            <button id="addBtn"
+                class="bg-indigo-600 text-white px-4 rounded-lg hover:bg-indigo-700">
+                Add
+            </button>
+        </div>
+
+        <ul id="taskList" class="mt-5 space-y-3"></ul>
+
+        <p id="empty" class="text-center text-gray-400 mt-5">
+            No tasks yet. Add your first task! 😊
+        </p>
+
+    </div>
+
+<script>
+    const input = document.getElementById("taskInput");
+    const addBtn = document.getElementById("addBtn");
+    const list = document.getElementById("taskList");
+    const empty = document.getElementById("empty");
+
+    addBtn.addEventListener("click", addTask);
+
+    input.addEventListener("keypress", function(e) {
+        if (e.key === "Enter") {
+            addTask();
+        }
+    });
+
+    function addTask() {
+        let task = input.value.trim();
+
+        if (task === "") {
+            alert("Please enter a task!");
+            return;
+        }
+
+        let li = document.createElement("li");
+
+        li.className =
+            "flex items-center justify-between bg-gray-100 p-3 rounded-lg";
+
+        li.innerHTML = `
+            <span class="task">${task}</span>
+
+            <div class="flex gap-2">
+                <button class="complete bg-green-500 text-white px-2 py-1 rounded">
+                    ✓
+                </button>
+
+                <button class="delete bg-red-500 text-white px-2 py-1 rounded">
+                    ✕
+                </button>
+            </div>
+        `;
+
+        li.querySelector(".complete").addEventListener("click", function() {
+            li.querySelector(".task").classList.toggle(
+                "line-through",
+                );
+            li.querySelector(".task").classList.toggle("text-gray-400");
+        });
+
+        li.querySelector(".delete").addEventListener("click", function() {
+            li.remove();
+            checkEmpty();
+        });
+
+        list.appendChild(li);
+        input.value = "";
+        checkEmpty();
+    }
+
+    function checkEmpty() {
+        empty.style.display =
+            list.children.length === 0 ? "block" : "none";
+    }
+</script>
+
+</body>
+</html>
